@@ -43,16 +43,6 @@
   .card h3{color:var(--maroon);font-size:1.4rem;margin-bottom:.4rem}
   .meta{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.15em;color:var(--gold);filter:brightness(.8);margin-bottom:.6rem}
   .note{font-size:.95rem;font-style:italic;margin-top:.6rem;opacity:.85}
-  form{background:#fff;border:1px solid var(--gold);padding:2rem 1.5rem;text-align:left;margin-top:1.5rem}
-  label{display:block;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;margin:1rem 0 .35rem;color:var(--maroon)}
-  input[type=text],input[type=number],textarea{width:100%;padding:.7rem .8rem;border:1px solid #d9c27a;background:var(--cream);font:inherit;color:var(--ink)}
-  input:focus,textarea:focus{outline:2px solid var(--gold)}
-  .choices{display:flex;gap:.75rem;flex-wrap:wrap}
-  .choices label{display:flex;align-items:center;gap:.5rem;margin:0;padding:.6rem 1rem;border:1px solid #d9c27a;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0;color:var(--ink)}
-  .choices input:checked + span{font-weight:600;color:var(--maroon)}
-  form .btn{background:var(--maroon);color:var(--gold-l);width:100%;margin-top:1.5rem}
-  form .btn:hover{background:var(--gold);color:var(--maroon-d)}
-  #thanks{display:none;margin-top:1.5rem;padding:1.5rem;border:1px solid var(--gold);background:#fff;color:var(--maroon)}
   .venue h3{color:var(--maroon);font-size:1.3rem;margin:1rem 0 .3rem}
   .countdown{display:flex;justify-content:center;gap:1rem;margin-top:3rem;flex-wrap:wrap}
   .cd{min-width:78px;padding:1rem .5rem;background:var(--maroon);color:var(--gold-l);border:1px solid var(--gold)}
@@ -70,7 +60,7 @@
 <body>
 
 <nav>
-  <a href="#home">Home</a><a href="#events">Events</a><a href="#rsvp">RSVP</a><a href="#venue">Venue</a>
+  <a href="#home">Home</a><a href="#events">Events</a><a href="#venue">Venue</a>
 </nav>
 
 <header class="hero" id="home">
@@ -78,7 +68,6 @@
   <h1><span id="n1"></span><em>weds</em><span id="n2"></span></h1>
   <div class="divider">✿ ❀ ✿</div>
   <div class="date" id="heroDate"></div>
-  <a class="btn" href="#rsvp">Kindly RSVP</a>
 </header>
 
 <section>
@@ -95,33 +84,6 @@
     <h2 class="reveal">The Celebrations</h2>
     <p class="sub reveal">Cherished moments, festivities full of life.</p>
     <div class="events" id="eventList"></div>
-  </div>
-</section>
-
-<section id="rsvp">
-  <div class="wrap reveal">
-    <h2>Kindly RSVP</h2>
-    <p class="sub">We'd love to celebrate together. Will you join us?</p>
-    <form id="rsvpForm">
-      <label for="name">YOUR NAME</label>
-      <input type="text" id="name" name="name" required>
-      <label for="phone">PHONE NUMBER</label>
-      <input type="tel" id="phone" name="phone" required inputmode="numeric" maxlength="10"
-             pattern="[6-9][0-9]{9}"
-             title="Enter your 10-digit Indian mobile number (digits only)"
-             placeholder="10-digit mobile number" autocomplete="tel">
-      <label>WILL YOU BE ATTENDING?</label>
-      <div class="choices">
-        <label><input type="radio" name="attending" value="Yes" required><span>Wouldn't miss it!</span></label>
-        <label><input type="radio" name="attending" value="No"><span>Wish I could be there</span></label>
-      </div>
-      <label for="guests">NUMBER OF GUESTS (INCLUDING YOU)</label>
-      <input type="number" id="guests" name="guests" min="1" max="10" value="1">
-      <label for="msg">SONG REQUEST OR MESSAGE (OPTIONAL)</label>
-      <textarea id="msg" name="message" rows="3"></textarea>
-      <button class="btn" type="submit">Send RSVP</button>
-    </form>
-    <div id="thanks"></div>
   </div>
 </section>
 
@@ -162,11 +124,7 @@ const CONFIG = {
   ],
   venueName: "Venue Name Here",
   venueAddr: "Street address, City, State PIN",
-  mapsQuery: "Venue Name Here, City",
-
-  // RSVP delivery: paste your Google Apps Script web app URL (ends in /exec).
-  // See apps-script/Code.gs for the script and setup instructions.
-  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbwMJgOizeYDyDPoEflavsg-9kRIVupqTktxT7-u93ykLCdlw5rH9po-dGPjaqEkubI/exec"
+  mapsQuery: "Venue Name Here, City"
 };
 /* ========================================= */
 
@@ -198,70 +156,6 @@ function tick(){
   $('cd-m').textContent = String(m).padStart(2,'0'); $('cd-s').textContent = String(Math.floor(d/1000)).padStart(2,'0');
 }
 tick(); setInterval(tick, 1000);
-
-// RSVP
-let dupAcked = false; // after showing the "already have your response" note, next submit = change
-
-// JSONP GET — lets us read the check response (normal fetch would be opaque under no-cors)
-function jsonpCheck(params){
-  return new Promise((resolve, reject) => {
-    const cb = "rsvpJsonp" + Date.now();
-    const s = document.createElement("script");
-    const q = new URLSearchParams(Object.assign({ action: "check", callback: cb }, params));
-    const timer = setTimeout(() => { cleanup(); reject(new Error("timeout")); }, 10000);
-    const cleanup = () => { clearTimeout(timer); delete window[cb]; s.remove(); };
-    window[cb] = v => { cleanup(); resolve(v); };
-    s.onerror = () => { cleanup(); reject(new Error("network")); };
-    s.src = `${CONFIG.rsvpEndpoint}?${q}`;
-    document.head.appendChild(s);
-  });
-}
-
-$('rsvpForm').addEventListener('submit', async ev => {
-  ev.preventDefault();
-  const data = Object.fromEntries(new FormData(ev.target).entries());
-
-  // Phone: exactly 10 Indian mobile digits (tolerate +91 / 0 / spaces typed in)
-  let ph = String(data.phone || "").replace(/\D/g, "");
-  if (ph.length === 12 && ph.startsWith("91")) ph = ph.slice(2);
-  else if (ph.length === 11 && ph.startsWith("0")) ph = ph.slice(1);
-  data.phone = ph;
-  if (!/^[6-9][0-9]{9}$/.test(ph)) {
-    alert("Please enter a valid 10-digit Indian mobile number.");
-    $('phone').focus();
-    return;
-  }
-  const coming = data.attending === "Yes";
-  const show = msg => {
-    ev.target.style.display = "none";
-    const t = $('thanks'); t.style.display = "block"; t.textContent = msg;
-  };
-  const thanksMsg = coming
-    ? `Thank you, ${data.name}! We can't wait to celebrate with you.`
-    : `Thank you for letting us know, ${data.name}. You'll be missed!`;
-  const send = () => fetch(CONFIG.rsvpEndpoint, { method: "POST", body: JSON.stringify(data), mode: "no-cors" });
-
-  if (!CONFIG.rsvpEndpoint) {
-    alert("RSVP is not set up yet. Please contact us directly.");
-    return;
-  }
-
-  try {
-    const check = await jsonpCheck({ name: data.name, phone: data.phone });
-    if (check.exists && !dupAcked) {
-      dupAcked = true;
-      const t = $('thanks'); t.style.display = "block";
-      t.textContent = `We already have your response, ${data.name}! If you'd like to change it, just submit the form again — your new response will replace the old one.`;
-      return;
-    }
-    await send();
-    show(thanksMsg);
-  } catch {
-    // Couldn't verify (offline/slow) — send anyway; the script upserts by name+phone.
-    try { await send(); show(thanksMsg); }
-    catch { alert("Could not send RSVP. Please check your connection and try again."); }
-  }
-});
 
 // Petals
 let petalsOn = !matchMedia('(prefers-reduced-motion: reduce)').matches, petalTimer;
