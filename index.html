@@ -159,10 +159,9 @@ const CONFIG = {
   venueAddr: "Street address, City, State PIN",
   mapsQuery: "Venue Name Here, City",
 
-  // RSVP delivery. Option A: paste a Google Apps Script / Formspree / Web3Forms URL.
-  rsvpEndpoint: "",
-  // Option B (used if endpoint is empty): RSVP opens WhatsApp with a prefilled message. Format: country code + number, no "+".
-  whatsappNumber: "919999999999"
+  // RSVP delivery: paste your Google Apps Script web app URL (ends in /exec).
+  // See apps-script/Code.gs for the script and setup instructions.
+  rsvpEndpoint: "https://script.google.com/macros/s/AKfycbwMJgOizeYDyDPoEflavsg-9kRIVupqTktxT7-u93ykLCdlw5rH9po-dGPjaqEkubI/exec"
 };
 /* ========================================= */
 
@@ -206,13 +205,19 @@ $('rsvpForm').addEventListener('submit', async ev => {
     const t = $('thanks'); t.style.display = "block";
     t.textContent = coming ? `Thank you, ${data.name}! We can't wait to celebrate with you.` : `Thank you for letting us know, ${data.name}. You'll be missed!`;
   };
-  if (CONFIG.rsvpEndpoint) {
-    try { await fetch(CONFIG.rsvpEndpoint, { method: "POST", body: f, mode: "no-cors" }); show(); }
-    catch { alert("Could not send RSVP. Please check your connection and try again."); }
-  } else {
-    const text = `RSVP for ${CONFIG.name1} & ${CONFIG.name2}\nName: ${data.name}\nAttending: ${data.attending}\nGuests: ${data.guests}\nMessage: ${data.message || "-"}`;
-    window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
+  if (!CONFIG.rsvpEndpoint) {
+    alert("RSVP is not set up yet. Please contact us directly.");
+    return;
+  }
+  try {
+    await fetch(CONFIG.rsvpEndpoint, {
+      method: "POST",
+      body: JSON.stringify(data),
+      mode: "no-cors"
+    });
     show();
+  } catch {
+    alert("Could not send RSVP. Please check your connection and try again.");
   }
 });
 
