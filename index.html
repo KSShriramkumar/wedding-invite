@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aarav & Meera | Wedding Invitation</title>
+<meta name="description" content="With love and joy, we invite you to celebrate our wedding.">
+<meta name="theme-color" content="#690e22">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Aarav & Meera | Wedding Invitation">
+<meta property="og:description" content="With love and joy, we invite you to celebrate our wedding.">
+<!-- Optional: add assets/og-preview.jpg (1200x630) and uncomment, using your full GitHub Pages URL
+<meta property="og:image" content="https://YOUR_USERNAME.github.io/wedding-invite/assets/og-preview.jpg"> -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{--maroon:#690e22;--maroon-d:#4a0817;--gold:#d4af37;--gold-l:#f3e2a0;--cream:#fff8ec;--ink:#3a1a1f}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Cormorant Garamond',Georgia,serif;background:var(--cream);color:var(--ink);font-size:19px;line-height:1.6;overflow-x:hidden}
+  h1,h2,h3,.cinzel{font-family:'Cinzel',Georgia,serif;font-weight:400;letter-spacing:.08em}
+  a{color:inherit}
+  nav{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:center;gap:1.6rem;padding:.8rem 1rem;background:rgba(74,8,23,.92);backdrop-filter:blur(6px)}
+  nav a{color:var(--gold-l);text-decoration:none;font-family:'Cinzel',serif;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase}
+  nav a:hover{color:#fff}
+  section{padding:5rem 1.25rem;text-align:center;position:relative}
+  .wrap{max-width:760px;margin:0 auto}
+  .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--gold-l);background:radial-gradient(ellipse at top,#8a1b36 0%,var(--maroon) 45%,var(--maroon-d) 100%)}
+  .hero .tag{font-size:.85rem;letter-spacing:.35em;color:var(--gold)}
+  .hero h1{font-size:clamp(2.4rem,9vw,5rem);margin:1.2rem 0;color:#fff;line-height:1.15}
+  .hero h1 em{display:block;font-family:'Cormorant Garamond',serif;font-size:.5em;color:var(--gold);margin:.2em 0}
+  .hero .date{font-family:'Cinzel',serif;letter-spacing:.25em;font-size:1rem}
+  .btn{display:inline-block;margin-top:2rem;padding:.75rem 2rem;border:1px solid var(--gold);color:var(--gold-l);text-decoration:none;font-family:'Cinzel',serif;letter-spacing:.2em;font-size:.8rem;background:transparent;cursor:pointer;transition:.25s}
+  .btn:hover{background:var(--gold);color:var(--maroon-d)}
+  .divider{color:var(--gold);letter-spacing:1em;margin:1rem 0;font-size:1.2rem}
+  h2{font-size:clamp(1.6rem,5vw,2.3rem);color:var(--maroon);margin-bottom:.5rem}
+  .sub{font-style:italic;opacity:.8;margin-bottom:2rem}
+  .alt{background:#fdeedd}
+  .events{display:grid;gap:1.5rem;margin-top:2rem}
+  .card{background:#fff;border:1px solid var(--gold);padding:2rem 1.5rem;box-shadow:0 6px 22px rgba(105,14,34,.08);position:relative}
+  .card::before{content:"";position:absolute;inset:6px;border:1px solid rgba(212,175,55,.45);pointer-events:none}
+  .card h3{color:var(--maroon);font-size:1.4rem;margin-bottom:.4rem}
+  .meta{font-family:'Cinzel',serif;font-size:.85rem;letter-spacing:.15em;color:var(--gold);filter:brightness(.8);margin-bottom:.6rem}
+  .note{font-size:.95rem;font-style:italic;margin-top:.6rem;opacity:.85}
+  form{background:#fff;border:1px solid var(--gold);padding:2rem 1.5rem;text-align:left;margin-top:1.5rem}
+  label{display:block;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.2em;margin:1rem 0 .35rem;color:var(--maroon)}
+  input[type=text],input[type=number],textarea{width:100%;padding:.7rem .8rem;border:1px solid #d9c27a;background:var(--cream);font:inherit;color:var(--ink)}
+  input:focus,textarea:focus{outline:2px solid var(--gold)}
+  .choices{display:flex;gap:.75rem;flex-wrap:wrap}
+  .choices label{display:flex;align-items:center;gap:.5rem;margin:0;padding:.6rem 1rem;border:1px solid #d9c27a;cursor:pointer;font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0;color:var(--ink)}
+  .choices input:checked + span{font-weight:600;color:var(--maroon)}
+  form .btn{background:var(--maroon);color:var(--gold-l);width:100%;margin-top:1.5rem}
+  form .btn:hover{background:var(--gold);color:var(--maroon-d)}
+  #thanks{display:none;margin-top:1.5rem;padding:1.5rem;border:1px solid var(--gold);background:#fff;color:var(--maroon)}
+  .venue h3{color:var(--maroon);font-size:1.3rem;margin:1rem 0 .3rem}
+  .countdown{display:flex;justify-content:center;gap:1rem;margin-top:3rem;flex-wrap:wrap}
+  .cd{min-width:78px;padding:1rem .5rem;background:var(--maroon);color:var(--gold-l);border:1px solid var(--gold)}
+  .cd b{display:block;font-family:'Cinzel',serif;font-size:1.8rem;font-weight:600}
+  .cd small{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase}
+  footer{background:var(--maroon-d);color:var(--gold-l);padding:2rem 1rem;text-align:center;font-size:.9rem;letter-spacing:.15em}
+  #petal-toggle{position:fixed;right:14px;bottom:14px;z-index:30;width:44px;height:44px;border-radius:50%;border:1px solid var(--gold);background:var(--maroon);color:var(--gold-l);font-size:1.2rem;cursor:pointer}
+  .petal{position:fixed;top:-30px;z-index:10;pointer-events:none;width:12px;height:16px;background:linear-gradient(135deg,#ffb3c1,#e0587a);border-radius:70% 0 70% 0;opacity:.85;animation:fall linear forwards}
+  @keyframes fall{to{transform:translate3d(var(--dx),110vh,0) rotate(540deg);opacity:.3}}
+  @media (prefers-reduced-motion:reduce){.petal{display:none}html{scroll-behavior:auto}}
+  .reveal{opacity:0;transform:translateY(20px);transition:.8s}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#home">Home</a><a href="#events">Events</a><a href="#rsvp">RSVP</a><a href="#venue">Venue</a>
+</nav>
+
+<header class="hero" id="home">
+  <div class="tag">✦ THE WEDDING OF ✦</div>
+  <h1><span id="n1"></span><em>weds</em><span id="n2"></span></h1>
+  <div class="divider">✿ ❀ ✿</div>
+  <div class="date" id="heroDate"></div>
+  <a class="btn" href="#rsvp">Kindly RSVP</a>
+</header>
+
+<section>
+  <div class="wrap reveal">
+    <div class="cinzel" style="font-size:.8rem;letter-spacing:.3em;color:var(--gold)">WITH HEARTS FULL OF GRATITUDE</div>
+    <h2 style="margin-top:.8rem">Your presence would grace our celebration</h2>
+    <div class="divider">❦</div>
+    <p id="invite"></p>
+  </div>
+</section>
+
+<section class="alt" id="events">
+  <div class="wrap">
+    <h2 class="reveal">The Celebrations</h2>
+    <p class="sub reveal">Cherished moments, festivities full of life.</p>
+    <div class="events" id="eventList"></div>
+  </div>
+</section>
+
+<section id="rsvp">
+  <div class="wrap reveal">
+    <h2>Kindly RSVP</h2>
+    <p class="sub">We'd love to celebrate together. Will you join us?</p>
+    <form id="rsvpForm">
+      <label for="name">YOUR NAME</label>
+      <input type="text" id="name" name="name" required>
+      <label>WILL YOU BE ATTENDING?</label>
+      <div class="choices">
+        <label><input type="radio" name="attending" value="Yes" required><span>Wouldn't miss it!</span></label>
+        <label><input type="radio" name="attending" value="No"><span>Wish I could be there</span></label>
+      </div>
+      <label for="guests">NUMBER OF GUESTS (INCLUDING YOU)</label>
+      <input type="number" id="guests" name="guests" min="1" max="10" value="1">
+      <label for="msg">SONG REQUEST OR MESSAGE (OPTIONAL)</label>
+      <textarea id="msg" name="message" rows="3"></textarea>
+      <button class="btn" type="submit">Send RSVP</button>
+    </form>
+    <div id="thanks"></div>
+  </div>
+</section>
+
+<section class="alt venue" id="venue">
+  <div class="wrap reveal">
+    <h2>Venue</h2>
+    <p class="sub">We look forward to welcoming you</p>
+    <h3 id="vName"></h3>
+    <p id="vAddr"></p>
+    <a class="btn" id="mapBtn" style="color:var(--maroon);border-color:var(--maroon)" target="_blank" rel="noopener">Guide me there</a>
+    <div class="countdown" id="countdown">
+      <div class="cd"><b id="cd-d">--</b><small>Days</small></div>
+      <div class="cd"><b id="cd-h">--</b><small>Hours</small></div>
+      <div class="cd"><b id="cd-m">--</b><small>Minutes</small></div>
+      <div class="cd"><b id="cd-s">--</b><small>Seconds</small></div>
+    </div>
+  </div>
+</section>
+
+<footer id="foot"></footer>
+<button id="petal-toggle" aria-label="Toggle falling petals" title="Toggle petals">🌸</button>
+
+<script>
+/* ============ EDIT THIS BLOCK ============ */
+const CONFIG = {
+  name1: "Aarav",
+  name2: "Meera",
+  dateLabel: "19 & 20 November 2026 ✦ Madurai",
+  countdownTo: "2026-11-20T09:00:00+05:30",
+  invite: "As we begin this beautiful journey together, we are so excited to celebrate with the blessings of our families and the warmth of our loved ones. It would mean so much to share these moments with you.",
+  events: [
+    { title: "Nichyathartham", date: "19 November 2026", time: "4:00 PM",
+      desc: "A joyful gathering as we exchange rings and receive blessings.", note: "No specific dress code." },
+    { title: "Dinner & DJ", date: "19 November 2026", time: "7:00 PM",
+      desc: "A colourful evening of festive dining and lively music.", note: "Dress code: bright colours and bold prints. No black, white or pastels, please!" },
+    { title: "Muhurtham", date: "20 November 2026", time: "9:00 AM onwards",
+      desc: "Witness the auspicious moment as we begin our life together.", note: "Followed by lunch." }
+  ],
+  venueName: "Venue Name Here",
+  venueAddr: "Street address, City, State PIN",
+  mapsQuery: "Venue Name Here, City",
+
+  // RSVP delivery. Option A: paste a Google Apps Script / Formspree / Web3Forms URL.
+  rsvpEndpoint: "",
+  // Option B (used if endpoint is empty): RSVP opens WhatsApp with a prefilled message. Format: country code + number, no "+".
+  whatsappNumber: "919999999999"
+};
+/* ========================================= */
+
+const $ = id => document.getElementById(id);
+document.title = `${CONFIG.name1} & ${CONFIG.name2} | Wedding Invitation`;
+$('n1').textContent = CONFIG.name1; $('n2').textContent = CONFIG.name2;
+$('heroDate').textContent = CONFIG.dateLabel;
+$('invite').textContent = CONFIG.invite;
+$('vName').textContent = CONFIG.venueName; $('vAddr').textContent = CONFIG.venueAddr;
+$('mapBtn').href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(CONFIG.mapsQuery);
+$('foot').textContent = `${CONFIG.name1.toUpperCase()} & ${CONFIG.name2.toUpperCase()} ✦ ${CONFIG.dateLabel.toUpperCase()}`;
+
+$('eventList').innerHTML = CONFIG.events.map(e => `
+  <div class="card reveal">
+    <h3>${e.title}</h3>
+    <div class="meta">${e.date} ✦ ${e.time}</div>
+    <p>${e.desc}</p>
+    ${e.note ? `<p class="note">${e.note}</p>` : ""}
+  </div>`).join("");
+
+// Countdown
+const target = new Date(CONFIG.countdownTo).getTime();
+function tick(){
+  let d = Math.max(0, target - Date.now());
+  const days = Math.floor(d/864e5); d -= days*864e5;
+  const h = Math.floor(d/36e5); d -= h*36e5;
+  const m = Math.floor(d/6e4); d -= m*6e4;
+  $('cd-d').textContent = days; $('cd-h').textContent = String(h).padStart(2,'0');
+  $('cd-m').textContent = String(m).padStart(2,'0'); $('cd-s').textContent = String(Math.floor(d/1000)).padStart(2,'0');
+}
+tick(); setInterval(tick, 1000);
+
+// RSVP
+$('rsvpForm').addEventListener('submit', async ev => {
+  ev.preventDefault();
+  const f = new FormData(ev.target);
+  const data = Object.fromEntries(f.entries());
+  const coming = data.attending === "Yes";
+  const show = () => {
+    ev.target.style.display = "none";
+    const t = $('thanks'); t.style.display = "block";
+    t.textContent = coming ? `Thank you, ${data.name}! We can't wait to celebrate with you.` : `Thank you for letting us know, ${data.name}. You'll be missed!`;
+  };
+  if (CONFIG.rsvpEndpoint) {
+    try { await fetch(CONFIG.rsvpEndpoint, { method: "POST", body: f, mode: "no-cors" }); show(); }
+    catch { alert("Could not send RSVP. Please check your connection and try again."); }
+  } else {
+    const text = `RSVP for ${CONFIG.name1} & ${CONFIG.name2}\nName: ${data.name}\nAttending: ${data.attending}\nGuests: ${data.guests}\nMessage: ${data.message || "-"}`;
+    window.open(`https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`, "_blank");
+    show();
+  }
+});
+
+// Petals
+let petalsOn = !matchMedia('(prefers-reduced-motion: reduce)').matches, petalTimer;
+function spawn(){
+  if(!petalsOn || document.hidden) return;
+  const p = document.createElement('span'); p.className = 'petal';
+  p.style.left = Math.random()*100 + 'vw';
+  p.style.setProperty('--dx', (Math.random()*160-80) + 'px');
+  p.style.animationDuration = (7 + Math.random()*6) + 's';
+  p.style.transform = `scale(${.6 + Math.random()*.8})`;
+  document.body.appendChild(p); setTimeout(() => p.remove(), 14000);
+}
+petalTimer = setInterval(spawn, 700);
+$('petal-toggle').addEventListener('click', () => { petalsOn = !petalsOn; $('petal-toggle').style.opacity = petalsOn ? 1 : .5; });
+
+// Scroll reveal
+const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } }), {threshold:.15});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
