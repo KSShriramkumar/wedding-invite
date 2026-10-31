@@ -105,6 +105,8 @@
     <form id="rsvpForm">
       <label for="name">YOUR NAME</label>
       <input type="text" id="name" name="name" required>
+      <label for="phone">PHONE NUMBER</label>
+      <input type="tel" id="phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="+91 98765 43210">
       <label>WILL YOU BE ATTENDING?</label>
       <div class="choices">
         <label><input type="radio" name="attending" value="Yes" required><span>Wouldn't miss it!</span></label>
@@ -195,29 +197,55 @@ function tick(){
 tick(); setInterval(tick, 1000);
 
 // RSVP
+let dupAcked = false; // after showing the "already have your response" note, next submit = change
+
+// JSONP GET — lets us read the check response (normal fetch would be opaque under no-cors)
+function jsonpCheck(params){
+  return new Promise((resolve, reject) => {
+    const cb = "rsvpJsonp" + Date.now();
+    const s = document.createElement("script");
+    const q = new URLSearchParams(Object.assign({ action: "check", callback: cb }, params));
+    const timer = setTimeout(() => { cleanup(); reject(new Error("timeout")); }, 10000);
+    const cleanup = () => { clearTimeout(timer); delete window[cb]; s.remove(); };
+    window[cb] = v => { cleanup(); resolve(v); };
+    s.onerror = () => { cleanup(); reject(new Error("network")); };
+    s.src = `${CONFIG.rsvpEndpoint}?${q}`;
+    document.head.appendChild(s);
+  });
+}
+
 $('rsvpForm').addEventListener('submit', async ev => {
   ev.preventDefault();
-  const f = new FormData(ev.target);
-  const data = Object.fromEntries(f.entries());
+  const data = Object.fromEntries(new FormData(ev.target).entries());
   const coming = data.attending === "Yes";
-  const show = () => {
+  const show = msg => {
     ev.target.style.display = "none";
-    const t = $('thanks'); t.style.display = "block";
-    t.textContent = coming ? `Thank you, ${data.name}! We can't wait to celebrate with you.` : `Thank you for letting us know, ${data.name}. You'll be missed!`;
+    const t = $('thanks'); t.style.display = "block"; t.textContent = msg;
   };
+  const thanksMsg = coming
+    ? `Thank you, ${data.name}! We can't wait to celebrate with you.`
+    : `Thank you for letting us know, ${data.name}. You'll be missed!`;
+  const send = () => fetch(CONFIG.rsvpEndpoint, { method: "POST", body: JSON.stringify(data), mode: "no-cors" });
+
   if (!CONFIG.rsvpEndpoint) {
     alert("RSVP is not set up yet. Please contact us directly.");
     return;
   }
+
   try {
-    await fetch(CONFIG.rsvpEndpoint, {
-      method: "POST",
-      body: JSON.stringify(data),
-      mode: "no-cors"
-    });
-    show();
+    const check = await jsonpCheck({ name: data.name, phone: data.phone });
+    if (check.exists && !dupAcked) {
+      dupAcked = true;
+      const t = $('thanks'); t.style.display = "block";
+      t.textContent = `We already have your response, ${data.name}! If you'd like to change it, just submit the form again — your new response will replace the old one.`;
+      return;
+    }
+    await send();
+    show(thanksMsg);
   } catch {
-    alert("Could not send RSVP. Please check your connection and try again.");
+    // Couldn't verify (offline/slow) — send anyway; the script upserts by name+phone.
+    try { await send(); show(thanksMsg); }
+    catch { alert("Could not send RSVP. Please check your connection and try again."); }
   }
 });
 
