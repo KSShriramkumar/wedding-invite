@@ -52,6 +52,9 @@
   .announcement{background:var(--gold-soft);color:var(--red-deep);text-align:center;font-size:.85rem;letter-spacing:.08em;padding:calc(.55rem + env(safe-area-inset-top)) .8rem .55rem;font-weight:500}
   .nav{position:sticky;top:0;z-index:40;display:flex;flex-wrap:wrap;align-items:center;gap:.4rem 1rem;padding:calc(.55rem + env(safe-area-inset-top)) clamp(.9rem,3vw,1.8rem) .55rem;background:rgba(249,244,233,.94);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(142,32,38,.14)}
   .monogram{width:44px;height:44px;flex:none;color:var(--red);text-decoration:none;display:flex;align-items:center;justify-content:center}
+  .monogram img{width:40px;height:40px;object-fit:contain;mix-blend-mode:darken;
+    -webkit-mask-image:radial-gradient(circle closest-side,#000 86%,transparent 104%);
+    mask-image:radial-gradient(circle closest-side,#000 86%,transparent 104%)}
   .monogram svg{width:34px;height:34px}
   .nav-links{order:3;flex:1 0 100%;display:flex;justify-content:center;gap:clamp(1.1rem,5vw,2.2rem);padding-top:.45rem;border-top:1px solid rgba(142,32,38,.12)}
   .nav-links a{font-size:.88rem;color:var(--ink);text-decoration:none;padding:.35rem .3rem;min-height:44px;display:inline-flex;align-items:center}
@@ -64,7 +67,11 @@
   /* hero — light stage for the monogram artwork */
   .hero{position:relative;min-height:calc(100vh - 9.6rem);min-height:calc(100svh - 9.6rem);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;overflow:hidden;padding:clamp(2.2rem,6vw,4rem) clamp(1.2rem,5vw,2rem) calc(4rem + env(safe-area-inset-bottom));background:radial-gradient(120% 90% at 50% 0%,#fffdf5 0%,var(--cream) 55%,var(--cream-2) 100%)}
   .hero-art{position:relative;width:min(66vw,340px);aspect-ratio:1;margin:0 auto 1.3rem}
-  .hero-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+  /* darken → the artwork's cream paper takes on the page colour (no pasted rectangle);
+     radial mask fades the paper's vignette corners so it reads as embedded */
+  .hero-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;mix-blend-mode:darken;
+    -webkit-mask-image:radial-gradient(circle closest-side,#000 86%,transparent 104%);
+    mask-image:radial-gradient(circle closest-side,#000 86%,transparent 104%)}
   .hero-art .art-fallback{position:absolute;inset:0;width:100%;height:100%;color:var(--red)}
   .eyebrow{font-size:clamp(.82rem,2.6vw,.92rem);letter-spacing:.12em;color:var(--gold-ink)}
   .hero .ornament{display:block;margin:.9rem 0 1rem;color:var(--gold)}
@@ -143,7 +150,10 @@
 
   /* footer */
   footer{background:var(--red);color:#f7e8cd;text-align:center;padding:clamp(2.6rem,8vw,4rem) 1.2rem calc(clamp(2.6rem,8vw,4rem) + env(safe-area-inset-bottom))}
-  .footer-mark{width:64px;height:64px;margin:0 auto 1.2rem;color:var(--gold-soft)}
+  /* cream paper medallion so the artwork sits deliberately on the red footer */
+  .footer-mark{display:flex;align-items:center;justify-content:center;width:96px;height:96px;margin:0 auto 1.2rem;border-radius:50%;background:var(--cream);border:1.5px solid var(--gold-soft);overflow:hidden;box-shadow:0 8px 22px rgba(0,0,0,.2);color:var(--red)}
+  .footer-mark img{width:100%;height:100%;object-fit:cover}
+  .footer-mark svg{width:64px;height:64px}
   footer p{color:#f3ddb9}
   footer strong{display:block;margin-top:.8rem;font-size:clamp(1.4rem,5vw,1.8rem);font-weight:600;color:#fffdf5;letter-spacing:.02em}
   footer strong em{font-style:normal;color:var(--gold-soft);font-family:'Cormorant Garamond',serif}
@@ -213,7 +223,8 @@
 
 <header class="nav">
   <a class="monogram" href="#home" data-i18n-aria="home" aria-label="முகப்பிற்கு செல்லவும்">
-    <svg viewBox="0 0 120 120" aria-hidden="true"><use href="#monogram"/></svg>
+    <img src="assets/ag-monogram.png" alt="" aria-hidden="true" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <svg style="display:none" viewBox="0 0 120 120" aria-hidden="true"><use href="#monogram"/></svg>
   </a>
   <nav class="nav-links" data-i18n-aria="sections" aria-label="பகுதிகள்">
     <a href="#events" data-i18n="navEvents">நிகழ்வுகள்</a>
@@ -231,7 +242,7 @@
         <svg class="art-fallback" viewBox="0 0 120 120" aria-hidden="true"><use href="#monogram-color"/></svg>
         <img src="assets/ag-monogram.png" data-i18n-alt="altArt" alt="அபிஷேக் & காயத்ரி மானா"
              onload="this.previousElementSibling.style.display='none'"
-             onerror="var f=this.previousElementSibling;this.remove();f.setAttribute('role','img');f.setAttribute('aria-label',L[currentLang].altArt)">
+             onerror="var f=this.previousElementSibling;this.remove();f.removeAttribute('aria-hidden');f.setAttribute('role','img');f.setAttribute('aria-label',L[currentLang].altArt)">
       </div>
       <span class="eyebrow" data-i18n="eyebrow">எங்கள் பெரியோர்கள், நண்பர்கள் மற்றும் குடும்பத்தின் ஆசியுடன்</span>
       <span class="ornament" aria-hidden="true">✦ &nbsp;❧&nbsp; ✦</span>
@@ -340,7 +351,10 @@
   <!-- இறுதி -->
   <footer>
     <div class="reveal">
-      <svg class="footer-mark" viewBox="0 0 120 120" role="img" data-i18n-aria="monoAria" aria-label="அபிஷேக் & காயத்ரி மானா"><use href="#monogram"/></svg>
+      <span class="footer-mark">
+        <img src="assets/ag-monogram.png" data-i18n-alt="monoAria" alt="அபிஷேக் & காயத்ரி மானா" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <svg style="display:none" viewBox="0 0 120 120" aria-hidden="true"><use href="#monogram"/></svg>
+      </span>
       <p data-i18n="fP">உங்களை வரவேற்க ஆவலுடன்.</p>
       <strong data-i18n-html="fStrong">அபிஷேக் <em>&amp;</em> காயத்ரி</strong>
       <small data-i18n="fS">04 டிசம்பர் 2026 · சென்னை</small>
